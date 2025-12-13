@@ -20,6 +20,37 @@ background:linear-gradient(rgba(18,15,26,.85),rgba(18,15,26,.95)),
 url("https://f006.backblazeb2.com/file/Le-monde-en-Photos/world.jpg") center/cover fixed;
 color:var(--text)
 }
+.city-btn{
+  position: relative;
+  height: 160px;
+  border-radius: 20px;
+  background-size: cover;
+  background-position: center;
+  cursor: pointer;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0,0,0,.35);
+}
+
+.city-btn::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:rgba(0,0,0,.25);
+}
+
+.city-btn span{
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:22px;
+  font-weight:500;
+  color:white;
+  letter-spacing:.5px;
+  z-index:1;
+  text-shadow:0 4px 12px rgba(0,0,0,.6);
+}
 header{text-align:center;padding:64px 24px}
 header h1{font-size:48px;font-weight:400;margin-bottom:16px}
 header p{font-size:20px;color:var(--muted);max-width:760px;margin:auto;line-height:1.8}
@@ -292,19 +323,30 @@ L.marker(v.coords).addTo(map).on("click",()=>location.hash=k);
 
 /* PAYS */
 function country(c){
-const d=data[c];
-app.innerHTML=`
-<button class="nav" onclick="location.hash='map'">← Carte</button>
-<div class="card">
-<h2>${c}</h2>
-<p>${d.description}</p>
-<div class="gallery">${d.images.map(fig).join("")}</div>
-<div class="list">
-${Object.entries(d.cities).map(([id,v])=>
-`<button onclick="location.hash='${c}/${id}'">${v.name}</button>`
-).join("")}
-</div>
-</div>`;
+  const d = data[c];
+
+  app.innerHTML = `
+    <button class="nav" onclick="location.hash='map'">← Carte</button>
+
+    <div class="card">
+      <h2>${c}</h2>
+      <p>${d.description}</p>
+
+      <div class="gallery">
+        ${d.images.map(fig).join("")}
+      </div>
+
+      <div class="list">
+        ${Object.entries(d.cities).map(([id, city]) => `
+          <div class="city-btn"
+               onclick="location.hash='${c}/${id}'"
+               style="background-image:url('${getCityImage(city, d)}')">
+            <span>${city.name}</span>
+          </div>
+        `).join("")}
+      </div>
+    </div>
+  `;
 }
 
 /* VILLE */
@@ -322,6 +364,17 @@ ${p.length?`<div class="gallery">${p.map(fig).join("")}</div>`:`<p>Aucun souveni
 </div>`;
 }
 
+function getCityImage(city, country){
+  if(city.cover) return city.cover;
+
+  for(const cat of Object.values(city.categories)){
+    if(cat.length && cat[0].src){
+      return cat[0].src;
+    }
+  }
+  return country.images[0]?.src || "";
+}
+  
 /* IMAGES */
 function fig(p){
 return `<figure onclick="openLightbox('${p.src}')">
@@ -339,6 +392,7 @@ document.body.appendChild(l);
 </script>
 </body>
 </html>
+
 
 
 
