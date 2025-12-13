@@ -177,6 +177,7 @@ Rue:[{src:"photos/france/lyon/street1.jpg",text:"Matin frais sur les quais."}],
 },
 
 Canada:{
+background:"https://upload.wikimedia.org/wikipedia/commons/c/cf/Flag_of_Canada.svg",  
 coords:[56.1,-106.3],
 description:"Espaces vastes, silences profonds et lumières changeantes.",
 images:[
@@ -354,6 +355,7 @@ if(p.length===2)return city(p[0],p[1]);
 
 /* SPLASH */
 function splash(){
+setCountryBackground("https://f006.backblazeb2.com/file/Le-monde-en-Photos/world.jpg");
 app.innerHTML=`
 <div class="card" style="text-align:center">
 <img src="https://f006.backblazeb2.com/file/Le-monde-en-Photos/cover.jpg" style="max-width:100%;border-radius:22px;margin-bottom:24px">
@@ -365,6 +367,7 @@ app.innerHTML=`
 
 /* CARTE */
 function mapPage(){
+setCountryBackground("https://f006.backblazeb2.com/file/Le-monde-en-Photos/world.jpg");
 app.innerHTML=`<div class="card"><div id="map"></div></div>`;
 const map=L.map("map",{scrollWheelZoom:false}).setView([20,0],2);
 L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png").addTo(map);
@@ -376,7 +379,7 @@ L.marker(v.coords).addTo(map).on("click",()=>location.hash=k);
 /* PAYS */
 function country(c){
   const d = data[c];
-
+  setCountryBackground(d.background);
   app.innerHTML = `
     <button class="nav" onclick="location.hash='map'">← Carte</button>
 
@@ -403,6 +406,7 @@ function country(c){
 
 /* VILLE */
 function city(c,id){
+setCountryBackground(data[c].background);
 const d=data[c].cities[id];
 app.innerHTML=`
 <button class="nav" onclick="location.hash='${c}'">← ${c}</button>
@@ -416,6 +420,13 @@ ${p.length?`<div class="gallery">${p.map(fig).join("")}</div>`:`<p>Aucun souveni
 </div>`;
 }
 
+function setCountryBackground(bg){
+  document.body.style.background = `
+    linear-gradient(rgba(18,15,26,.85), rgba(18,15,26,.95)),
+    url("${bg}") center / cover fixed
+  `;
+}
+  
 function getCityImage(city, country){
   if(city.cover) return city.cover;
 
@@ -444,6 +455,7 @@ document.body.appendChild(l);
 </script>
 </body>
 </html>
+
 
 
 
