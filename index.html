@@ -51,6 +51,20 @@ color:var(--text)
   z-index:1;
   text-shadow:0 4px 12px rgba(0,0,0,.6);
 }
+figcaption{
+  text-align: center;
+}
+figure{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+}
+
+figure img{
+  max-height:260px;
+  object-fit:contain;
+}
 header{text-align:center;padding:64px 24px}
 header h1{font-size:48px;font-weight:400;margin-bottom:16px}
 header p{font-size:20px;color:var(--muted);max-width:760px;margin:auto;line-height:1.8}
@@ -392,6 +406,7 @@ document.body.appendChild(l);
 </script>
 </body>
 </html>
+
 
 
 
