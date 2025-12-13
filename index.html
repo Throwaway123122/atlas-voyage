@@ -172,7 +172,7 @@ categories:{
 {src:"https://f006.backblazeb2.com/file/Le-monde-en-Photos/Canada/Ottawa/tulipe3.jpg",text:"Vivantes."},
 {src:"https://f006.backblazeb2.com/file/Le-monde-en-Photos/Canada/Ottawa/tulipe4.jpg",text:"Des oeuvres diverses sont parsemées le long du parcours."},
 {src:"https://f006.backblazeb2.com/file/Le-monde-en-Photos/Canada/Ottawa/tulipe5.jpg",text:"Grosse tulipe!"},
-{src:"https://f006.backblazeb2.com/file/Le-monde-en-Photos/Canada/Ottawa/cannetons.jpg",text:"Les petits canadards nagent paisiblement."},
+{src:"https://f006.backblazeb2.com/file/Le-monde-en-Photos/Canada/Ottawa/Cannetons.jpg",text:"Les petits canadards nagent paisiblement."},
 {src:"https://f006.backblazeb2.com/file/Le-monde-en-Photos/Canada/Ottawa/art.jpg",text:"Art insecte."},
 {src:"https://f006.backblazeb2.com/file/Le-monde-en-Photos/Canada/Ottawa/sante.jpg",text:"Santé!"},
 {src:"https://f006.backblazeb2.com/file/Le-monde-en-Photos/Canada/Ottawa/fromage.jpg",text:"Ils apprécient le fromage à Ottawa."}
@@ -255,8 +255,6 @@ function fig(p){
 return `<figure onclick="openLightbox('${p.src}')">
 <img src="${p.src}">
 <figcaption>${p.text}</figcaption>
-justify-content: center; /* centre horizontalement */
-align-items: center;     /* centre verticalement */
 </figure>`;
 }
 function openLightbox(src){
@@ -269,6 +267,7 @@ document.body.appendChild(l);
 </script>
 </body>
 </html>
+
 
 
 
