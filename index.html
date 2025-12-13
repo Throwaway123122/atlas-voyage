@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Atlas des Voyages</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<style>
+:root{
+--bg:#120f1a;--text:#f7f4ef;--muted:#c9c4b8;--accent:#f4b7a1;--accent2:#c7b7e2;
+}
+*{box-sizing:border-box}
+body{
+margin:0;
+font-family:Georgia,Inter,serif;
+background:linear-gradient(rgba(18,15,26,.85),rgba(18,15,26,.95)),
+url("photos/backgrounds/world.jpg") center/cover fixed;
+color:var(--text)
+}
+header{text-align:center;padding:64px 24px}
+header h1{font-size:48px;font-weight:400;margin-bottom:16px}
+header p{font-size:20px;color:var(--muted);max-width:760px;margin:auto;line-height:1.8}
+main{max-width:1200px;margin:auto;padding:24px}
+.card{
+background:rgba(255,255,255,.08);
+backdrop-filter:blur(16px);
+border-radius:28px;
+padding:32px;
+margin-bottom:32px;
+box-shadow:0 30px 60px rgba(0,0,0,.4)
+}
+#map{height:520px;border-radius:22px}
+h2{font-size:34px;font-weight:400}
+h3{margin-top:36px;color:var(--accent);font-weight:400}
+p{font-size:19px;line-height:1.8;color:var(--muted)}
+.list{
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
+gap:20px;margin-top:28px
+}
+.list button,.nav{
+padding:16px 18px;
+border-radius:18px;
+border:none;
+font-size:16px;
+background:linear-gradient(135deg,var(--accent),var(--accent2));
+cursor:pointer
+}
+.gallery{
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+gap:26px;margin-top:24px
+}
+figure{margin:0;cursor:pointer}
+figure img{width:100%;border-radius:20px;transition:transform .4s}
+figure:hover img{transform:scale(1.03)}
+figcaption{margin-top:10px;font-size:15px;color:var(--muted)}
+.lightbox{
+position:fixed;inset:0;
+background:rgba(10,8,15,.95);
+display:flex;
+align-items:center;
+justify-content:center;
+z-index:999;
+cursor:pointer
+}
+.lightbox img{max-width:90vw;max-height:90vh;border-radius:20px}
+footer{text-align:center;padding:48px;color:var(--muted)}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>Atlas des Voyages</h1>
+<p>Des pays traversés, des villes ressenties, des instants suspendus.</p>
+</header>
+
+<main id="app"></main>
+
+<footer>© Elisabeth LESAGE 2025</footer>
+
+<script>
+const data={
+France:{
+coords:[46.6,2.2],
+description:"Pierres anciennes, lumière douce et errances urbaines.",
+images:[
+{src:"photos/france/cover1.jpg",text:"Arrivée en train, lumière dorée."},
+{src:"photos/france/cover2.jpg",text:"Fin de journée sur les toits."}
+],
+cities:{
+paris:{
+name:"Paris",
+description:"Errances lentes entre architecture et instants volés.",
+categories:{
+Architecture:[
+{src:"photos/france/paris/architecture1.jpg",text:"Façades haussmanniennes au petit matin."},
+{src:"photos/france/paris/architecture2.jpg",text:"Cour intérieure silencieuse."}
+],
+Rue:[
+{src:"photos/france/paris/street1.jpg",text:"Café du matin, journal froissé."},
+{src:"photos/france/paris/street2.jpg",text:"Pluie fine sur l'asphalte."}
+],
+Événements:[
+{src:"photos/france/paris/event1.jpg",text:"Soir d'été au bord de la Seine."}
+],
+Spectacles:[
+{src:"photos/france/paris/show1.jpg",text:"Lumières de scène, regards figés."}
+],
+Randonnées:[
+{src:"photos/france/paris/hike1.jpg",text:"Sentier discret aux portes de la ville."}
+],
+Musées:[
+{src:"photos/france/paris/museum1.jpg",text:"Galerie calme, pas feutrés."}
+]
+}
+},
+lyon:{
+name:"Lyon",
+description:"Entre fleuves et collines.",
+categories:{
+Architecture:[{src:"photos/france/lyon/arch1.jpg",text:"Vieilles pierres et passages secrets."}],
+Rue:[{src:"photos/france/lyon/street1.jpg",text:"Matin frais sur les quais."}],
+Événements:[],Spectacles:[],Randonnées:[],Musées:[]
+}
+}
+}
+},
+
+Canada:{
+coords:[56.1,-106.3],
+description:"Espaces vastes, silences profonds et lumières changeantes.",
+images:[
+{src:"photos/canada/cover1.jpg",text:"Arrivée au cœur de l'immensité."},
+{src:"photos/canada/cover2.jpg",text:"Lumière froide sur l'horizon."}
+],
+cities:{
+montreal:{
+name:"Montréal",
+description:"Ville de saisons, de ruelles et de contrastes.",
+categories:{
+Architecture:[{src:"photos/canada/montreal/arch1.jpg",text:"Briques, escaliers, mémoire."}],
+Rue:[{src:"photos/canada/montreal/street1.jpg",text:"Fin d'après-midi sur le Plateau."}],
+Événements:[{src:"photos/canada/montreal/event1.jpg",text:"Festival, foule douce."}],
+Spectacles:[{src:"photos/canada/montreal/show1.jpg",text:"Lumières intimistes."}],
+Randonnées:[{src:"photos/canada/montreal/hike1.jpg",text:"Forêt urbaine après la pluie."}],
+Musées:[{src:"photos/canada/montreal/museum1.jpg",text:"Regards suspendus."}]
+}
+},
+
+quebec:{
+name:"Québec",
+description:"Pierres anciennes et fleuve immense.",
+categories:{
+Architecture:[{src:"photos/canada/quebec/arch1.jpg",text:"Fortifications dans la brume."}],
+Rue:[{src:"photos/canada/quebec/street1.jpg",text:"Matin calme sur les pavés."}],
+Événements:[],Spectacles:[],Randonnées:[],Musées:[]
+}
+},
+
+ottawa:{
+name:"Ottawa",
+description:"Capitale canadienne.",
+categories:{
+"Festival annuel des Tulipes":[
+{src:"photos/canada/ottawa/tulipe1.jpg",text:"Monochrome."},
+{src:"photos/canada/ottawa/tulipe2.jpg",text:"Colorées."},
+{src:"photos/canada/ottawa/tulipe3.jpg",text:"Vivantes."},
+{src:"photos/canada/ottawa/tulipe4.jpg",text:"Des oeuvres diverses sont parsemées le long du parcours."},
+{src:"photos/canada/ottawa/tulipe5.jpg",text:"Grosse tulipe!"},
+{src:"photos/canada/ottawa/cannetons.jpg",text:"Les petits canadards nagent paisiblement."},
+{src:"photos/canada/ottawa/art.jpg",text:"Art insecte."},
+{src:"photos/canada/ottawa/sante.jpg",text:"Santé!"},
+{src:"photos/canada/ottawa/fromage.jpg",text:"Ils apprécient le fromage à Ottawa."}
+]
+}
+}
+}
+}
+};
+
+const app=document.getElementById("app");
+window.addEventListener("hashchange",render);
+render();
+
+/* ROUTEUR */
+function render(){
+const h=location.hash.slice(1);
+if(!h)return splash();
+const p=h.split("/");
+if(p[0]==="map")return mapPage();
+if(p.length===1)return country(p[0]);
+if(p.length===2)return city(p[0],p[1]);
+}
+
+/* SPLASH */
+function splash(){
+app.innerHTML=`
+<div class="card" style="text-align:center">
+<img src="photos/backgrounds/cover.jpg" style="max-width:100%;border-radius:22px;margin-bottom:24px">
+<h2>Atlas des Voyages</h2>
+<p>Explorer le monde, un endroit à la fois.</p>
+<button class="nav" onclick="location.hash='map'">Entrer dans l’atlas</button>
+</div>`;
+}
+
+/* CARTE */
+function mapPage(){
+app.innerHTML=`<div class="card"><div id="map"></div></div>`;
+const map=L.map("map",{scrollWheelZoom:false}).setView([20,0],2);
+L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png").addTo(map);
+Object.entries(data).forEach(([k,v])=>{
+L.marker(v.coords).addTo(map).on("click",()=>location.hash=k);
+});
+}
+
+/* PAYS */
+function country(c){
+const d=data[c];
+app.innerHTML=`
+<button class="nav" onclick="location.hash='map'">← Carte</button>
+<div class="card">
+<h2>${c}</h2>
+<p>${d.description}</p>
+<div class="gallery">${d.images.map(fig).join("")}</div>
+<div class="list">
+${Object.entries(d.cities).map(([id,v])=>
+`<button onclick="location.hash='${c}/${id}'">${v.name}</button>`
+).join("")}
+</div>
+</div>`;
+}
+
+/* VILLE */
+function city(c,id){
+const d=data[c].cities[id];
+app.innerHTML=`
+<button class="nav" onclick="location.hash='${c}'">← ${c}</button>
+<div class="card">
+<h2>${d.name}</h2>
+<p>${d.description}</p>
+${Object.entries(d.categories).map(([k,p])=>`
+<h3>${k}</h3>
+${p.length?`<div class="gallery">${p.map(fig).join("")}</div>`:`<p>Aucun souvenir pour l'instant.</p>`}
+`).join("")}
+</div>`;
+}
+
+/* IMAGES */
+function fig(p){
+return `<figure onclick="openLightbox('${p.src}')">
+<img src="${p.src}">
+<figcaption>${p.text}</figcaption>
+</figure>`;
+}
+function openLightbox(src){
+const l=document.createElement("div");
+l.className="lightbox";
+l.innerHTML=`<img src="${src}">`;
+l.onclick=()=>l.remove();
+document.body.appendChild(l);
+}
+</script>
+</body>
+</html>
