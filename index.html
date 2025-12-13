@@ -85,6 +85,38 @@ footer{text-align:center;padding:48px;color:var(--muted)}
 
 <script>
 const data={
+"États-Unis":{
+  coords: [39.8, -98.6], // Latitude et longitude approximatives du centre des USA
+  description: "Vastes paysages, villes et parcs nationaux.",
+  images: [
+    {src:"photos/usa/cover1.jpg", text:"Paysages américains."},
+    {src:"photos/usa/cover2.jpg", text:"Coucher de soleil sur le Midwest."}
+  ],
+  cities: {
+    new_york: {
+      name:"New York",
+      description:"Ville qui ne dort jamais.",
+      categories: {
+        Architecture:[{src:"photos/usa/ny/arch1.jpg", text:"Gratte-ciels iconiques."}],
+        Rue:[{src:"photos/usa/ny/street1.jpg", text:"Times Square le soir."}],
+        Événements:[],
+        Spectacles:[],
+        Randonnées:[],
+        Musées:[]
+      }
+    },
+    los_angeles: {
+      name:"Los Angeles",
+      description:"Plages, collines et studios de cinéma.",
+      categories:{
+        Architecture:[{src:"photos/usa/la/arch1.jpg", text:"Hollywood Boulevard."}],
+        Rue:[{src:"photos/usa/la/street1.jpg", text:"Sunset Boulevard."}],
+        Événements:[], Spectacles:[], Randonnées:[], Musées:[]
+      }
+    }
+  }
+},
+  
 France:{
 coords:[46.6,2.2],
 description:"Pierres anciennes, lumière douce et errances urbaines.",
@@ -201,7 +233,7 @@ if(p.length===2)return city(p[0],p[1]);
 function splash(){
 app.innerHTML=`
 <div class="card" style="text-align:center">
-<img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80" style="max-width:100%;border-radius:22px;margin-bottom:24px">
+<img src="https://f006.backblazeb2.com/file/Le-monde-en-Photos/cover.jpg" style="max-width:100%;border-radius:22px;margin-bottom:24px">
 <h2>Atlas des Voyages</h2>
 <p>Explorer le monde, un endroit à la fois.</p>
 <button class="nav" onclick="location.hash='map'">Entrer dans l’atlas</button>
@@ -267,6 +299,7 @@ document.body.appendChild(l);
 </script>
 </body>
 </html>
+
 
 
 
