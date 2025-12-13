@@ -255,6 +255,8 @@ function fig(p){
 return `<figure onclick="openLightbox('${p.src}')">
 <img src="${p.src}">
 <figcaption>${p.text}</figcaption>
+justify-content: center; /* centre horizontalement */
+align-items: center;     /* centre verticalement */
 </figure>`;
 }
 function openLightbox(src){
@@ -267,6 +269,7 @@ document.body.appendChild(l);
 </script>
 </body>
 </html>
+
 
 
 
