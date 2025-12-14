@@ -568,7 +568,10 @@ function getCityImage(city, country){
 /* IMAGES */
 function fig(p){
 return `<figure onclick="openLightbox('${p.src}')">
-<img src="${p.src}">
+<img 
+  src="${p.src}" 
+  loading="lazy" 
+  decoding="async">
 <figcaption>${p.text}</figcaption>
 </figure>`;
 }
@@ -582,6 +585,7 @@ document.body.appendChild(l);
 </script>
 </body>
 </html>
+
 
 
 
