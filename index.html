@@ -143,6 +143,43 @@ footer{text-align:center;padding:48px;color:var(--muted)}
 
 <script>
 const data={
+"États-Unis":{
+  background:"https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg",
+  coords:[39.8,-98.6], // centre géographique des USA
+  description:"Routes infinies, villes mythiques et paysages démesurés.",
+  images:[
+    {src:"photos/usa/cover1.jpg",text:"Route 66, horizon sans fin."},
+    {src:"photos/usa/cover2.jpg",text:"Crépuscule urbain américain."}
+  ],
+  cities:{
+    newyork:{
+      name:"New York",
+      description:"Verticale, électrique et intemporelle.",
+      categories:{
+        Architecture:[
+          {src:"photos/usa/newyork/arch1.jpg",text:"Skyline au lever du jour."}
+        ],
+        Rue:[
+          {src:"photos/usa/newyork/street1.jpg",text:"Marche rapide à Manhattan."}
+        ],
+        Parcs:[
+          {src:"photos/usa/newyork/park1.jpg",text:"Central Park à l’automne."}
+        ]
+      }
+    },
+
+    chicago:{
+      name:"Chicago",
+      description:"Architecture forte au bord du lac Michigan.",
+      categories:{
+        Architecture:[
+          {src:"photos/usa/chicago/arch1.jpg",text:"Reflets sur la rivière."}
+        ]
+      }
+    }
+  }
+},
+  
 France:{
 coords:[46.6,2.2],
 description:"Pierres anciennes, lumière douce et errances urbaines.",
@@ -509,6 +546,7 @@ document.body.appendChild(l);
 </script>
 </body>
 </html>
+
 
 
 
