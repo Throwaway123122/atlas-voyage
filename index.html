@@ -3,8 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Atlas Voyages</title>
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -14,23 +13,6 @@
 --bg:#120f1a;--text:#f7f4ef;--muted:#c9c4b8;--accent:#f4b7a1;--accent2:#c7b7e2;
 }
 *{box-sizing:border-box}
-
-html, body {
-  touch-action: pan-x pan-y;
-}  
-
-.lightbox {
-  touch-action: none; /* block gestures on overlay */
-}
-
-.lightbox img {
-  touch-action: pinch-zoom;
-}  
-
-body.no-scroll {
-  overflow: hidden;
-}
-  
 body{
   margin:0;
   font-family:Georgia,Inter,serif;
@@ -605,17 +587,20 @@ function fig(p){
   `;
 }
 function openLightbox(src){
+  // Prevent double-open
   if(lightboxOpen) return;
 
   const l = document.createElement("div");
   l.className = "lightbox";
   l.innerHTML = `<img src="${src}">`;
+
   l.onclick = closeLightbox;
 
   document.body.appendChild(l);
-  document.body.classList.add("no-scroll");
 
   lightboxOpen = true;
+
+  // Push history state (important)
   history.pushState({ lightbox: true }, "");
 }
 
@@ -623,8 +608,14 @@ function closeLightbox(){
   const l = document.querySelector(".lightbox");
   if(l) l.remove();
 
-  document.body.classList.remove("no-scroll");
-  lightboxOpen = false;
+  if(lightboxOpen){
+    lightboxOpen = false;
+
+    // Only go back if this close was user-initiated
+    if(history.state && history.state.lightbox){
+      history.back();
+    }
+  }
 }
 
 window.addEventListener("popstate", () => {
@@ -638,8 +629,6 @@ window.addEventListener("popstate", () => {
 </script>
 </body>
 </html>
-
-
 
 
 
