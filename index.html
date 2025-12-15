@@ -567,13 +567,20 @@ function getCityImage(city, country){
   
 /* IMAGES */
 function fig(p){
-return `<figure onclick="openLightbox('${p.src}')">
-<img 
-  src="${p.src}" 
-  loading="lazy" 
-  decoding="async">
-<figcaption>${p.text}</figcaption>
-</figure>`;
+  const thumb = p.thumb || p.src;
+
+  return `
+    <figure onclick="openLightbox('${p.src}')">
+      <img
+        src="${thumb}"
+        loading="lazy"
+        decoding="async"
+        width="600"
+        height="400"
+      >
+      <figcaption>${p.text || ""}</figcaption>
+    </figure>
+  `;
 }
 function openLightbox(src){
 const l=document.createElement("div");
@@ -585,6 +592,7 @@ document.body.appendChild(l);
 </script>
 </body>
 </html>
+
 
 
 
