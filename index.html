@@ -465,6 +465,10 @@ categories:{
 }
 };
 
+let lightboxOpen = false;
+
+
+  
 const app=document.getElementById("app");
 window.addEventListener("hashchange",render);
 render();
@@ -583,15 +587,49 @@ function fig(p){
   `;
 }
 function openLightbox(src){
-const l=document.createElement("div");
-l.className="lightbox";
-l.innerHTML=`<img src="${src}">`;
-l.onclick=()=>l.remove();
-document.body.appendChild(l);
+  // Prevent double-open
+  if(lightboxOpen) return;
+
+  const l = document.createElement("div");
+  l.className = "lightbox";
+  l.innerHTML = `<img src="${src}">`;
+
+  l.onclick = closeLightbox;
+
+  document.body.appendChild(l);
+
+  lightboxOpen = true;
+
+  // Push history state (important)
+  history.pushState({ lightbox: true }, "");
 }
+
+function closeLightbox(){
+  const l = document.querySelector(".lightbox");
+  if(l) l.remove();
+
+  if(lightboxOpen){
+    lightboxOpen = false;
+
+    // Only go back if this close was user-initiated
+    if(history.state && history.state.lightbox){
+      history.back();
+    }
+  }
+}
+
+window.addEventListener("popstate", () => {
+  if(lightboxOpen){
+    const l = document.querySelector(".lightbox");
+    if(l) l.remove();
+    lightboxOpen = false;
+  }
+});
+  
 </script>
 </body>
 </html>
+
 
 
 
