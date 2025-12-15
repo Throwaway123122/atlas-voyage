@@ -13,6 +13,22 @@
 --bg:#120f1a;--text:#f7f4ef;--muted:#c9c4b8;--accent:#f4b7a1;--accent2:#c7b7e2;
 }
 *{box-sizing:border-box}
+
+/* Supprime le flash bleu au tap/click */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+  
+/* Supprime le focus outline sur éléments cliquables */
+figure,
+figure img,
+button,
+.city-btn {
+  outline: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+  
 body{
   margin:0;
   font-family:Georgia,Inter,serif;
@@ -629,6 +645,7 @@ window.addEventListener("popstate", () => {
 </script>
 </body>
 </html>
+
 
 
 
