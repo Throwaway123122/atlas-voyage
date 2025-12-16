@@ -175,32 +175,8 @@ cursor:pointer
   }
 }
 
-/* ===== Séparation claire des catégories ===== */
 
-.city-section{
-  margin-top: 72px;
-  padding-top: 36px;
-  border-top: 1px solid rgba(255,255,255,.15);
-}
 
-.section-header{
-  padding-left: 18px;
-  margin-bottom: 28px;
-  border-left: 3px solid var(--accent);
-}
-
-.section-header h3{
-  margin: 0;
-  font-size: 28px;
-  font-weight: 400;
-  color: var(--accent);
-}
-
-.section-subtitle{
-  margin-top: 6px;
-  font-size: 16px;
-  color: var(--muted);
-}
   
 .lightbox img{max-width:90vw;max-height:90vh;border-radius:20px}
 footer{text-align:center;padding:48px;color:var(--muted)}
@@ -727,28 +703,7 @@ function closeLightbox(){
   }
 }
 
-for (const category in categories) {
-  app.innerHTML += `<h3>${category}</h3>`
-  // puis la gallery
-}
 
-const section = document.createElement("section");
-section.className = "city-section";
-
-section.innerHTML = `
-  <div class="section-header">
-    <h3>${category}</h3>
-  </div>
-`;
-
-const gallery = document.createElement("div");
-gallery.className = "gallery";
-
-/* ici tu continues ton code EXISTANT
-   qui crée les <figure> avec les images */
-
-section.appendChild(gallery);
-app.appendChild(section);
   
   
 window.addEventListener("popstate", () => {
@@ -763,6 +718,7 @@ window.addEventListener("popstate", () => {
 </script>
 </body>
 </html>
+
 
 
 
