@@ -174,6 +174,33 @@ cursor:pointer
     text-align: left;
   }
 }
+
+/* ===== Séparation claire des catégories ===== */
+
+.city-section{
+  margin-top: 72px;
+  padding-top: 36px;
+  border-top: 1px solid rgba(255,255,255,.15);
+}
+
+.section-header{
+  padding-left: 18px;
+  margin-bottom: 28px;
+  border-left: 3px solid var(--accent);
+}
+
+.section-header h3{
+  margin: 0;
+  font-size: 28px;
+  font-weight: 400;
+  color: var(--accent);
+}
+
+.section-subtitle{
+  margin-top: 6px;
+  font-size: 16px;
+  color: var(--muted);
+}
   
 .lightbox img{max-width:90vw;max-height:90vh;border-radius:20px}
 footer{text-align:center;padding:48px;color:var(--muted)}
@@ -230,6 +257,21 @@ USA:{
           {src:"https://f006.backblazeb2.com/file/Le-monde-en-Photos/USA/Boston/MIT/5.jpg",thumb:"https://f006.backblazeb2.com/file/Le-monde-en-Photos/USA/Boston/MIT/Thumb/5.jpg",text:"Centre informatique Ray et Maria Stata."},
           {src:"https://f006.backblazeb2.com/file/Le-monde-en-Photos/USA/Boston/MIT/6.jpg",thumb:"https://f006.backblazeb2.com/file/Le-monde-en-Photos/USA/Boston/MIT/Thumb/6.jpg",text:"Bâtiment des services de santé du MIT."},
         ],
+        "Boston Public Library":[
+          {src:"https://f006.backblazeb2.com/file/Le-monde-en-Photos/USA/Boston/BPL/1.jpg",thumb:"https://f006.backblazeb2.com/file/Le-monde-en-Photos/USA/Boston/BPL/Thumb/1.jpg",text:""},
+          {src:"https://f006.backblazeb2.com/file/Le-monde-en-Photos/USA/Boston/BPL/2.jpg",thumb:"https://f006.backblazeb2.com/file/Le-monde-en-Photos/USA/Boston/BPL/Thumb/2.jpg",text:""},
+          {src:"https://f006.backblazeb2.com/file/Le-monde-en-Photos/USA/Boston/BPL/3.jpg",thumb:"https://f006.backblazeb2.com/file/Le-monde-en-Photos/USA/Boston/BPL/Thumb/3.jpg",text:""},
+          {src:"https://f006.backblazeb2.com/file/Le-monde-en-Photos/USA/Boston/BPL/4.jpg",thumb:"https://f006.backblazeb2.com/file/Le-monde-en-Photos/USA/Boston/BPL/Thumb/4.jpg",text:""},
+          {src:"https://f006.backblazeb2.com/file/Le-monde-en-Photos/USA/Boston/BPL/5.jpg",thumb:"https://f006.backblazeb2.com/file/Le-monde-en-Photos/USA/Boston/BPL/Thumb/5.jpg",text:""},
+          {src:"https://f006.backblazeb2.com/file/Le-monde-en-Photos/USA/Boston/BPL/6.jpg",thumb:"https://f006.backblazeb2.com/file/Le-monde-en-Photos/USA/Boston/BPL/Thumb/6.jpg",text:""},
+          {src:"https://f006.backblazeb2.com/file/Le-monde-en-Photos/USA/Boston/BPL/7.jpg",thumb:"https://f006.backblazeb2.com/file/Le-monde-en-Photos/USA/Boston/BPL/Thumb/7.jpg",text:""},
+          {src:"https://f006.backblazeb2.com/file/Le-monde-en-Photos/USA/Boston/BPL/8.jpg",thumb:"https://f006.backblazeb2.com/file/Le-monde-en-Photos/USA/Boston/BPL/Thumb/8.jpg",text:""},
+          {src:"https://f006.backblazeb2.com/file/Le-monde-en-Photos/USA/Boston/BPL/9.jpg",thumb:"https://f006.backblazeb2.com/file/Le-monde-en-Photos/USA/Boston/BPL/Thumb/9.jpg",text:""},
+          {src:"https://f006.backblazeb2.com/file/Le-monde-en-Photos/USA/Boston/BPL/10.jpg",thumb:"https://f006.backblazeb2.com/file/Le-monde-en-Photos/USA/Boston/BPL/Thumb/10.jpg",text:""},
+          {src:"https://f006.backblazeb2.com/file/Le-monde-en-Photos/USA/Boston/BPL/11.jpg",thumb:"https://f006.backblazeb2.com/file/Le-monde-en-Photos/USA/Boston/BPL/Thumb/11.jpg",text:""}
+          
+          
+        ],
         "Ville de Boston":[
           {src:"https://f006.backblazeb2.com/file/Le-monde-en-Photos/USA/Boston/ville/1.jpg",thumb:"https://f006.backblazeb2.com/file/Le-monde-en-Photos/USA/Boston/ville/Thumb/1.jpg",text:""},
           {src:"https://f006.backblazeb2.com/file/Le-monde-en-Photos/USA/Boston/ville/2.jpg",thumb:"https://f006.backblazeb2.com/file/Le-monde-en-Photos/USA/Boston/ville/Thumb/2.jpg",text:""},
@@ -267,8 +309,7 @@ USA:{
           {src:"https://f006.backblazeb2.com/file/Le-monde-en-Photos/USA/Boston/ville/34.jpg",thumb:"https://f006.backblazeb2.com/file/Le-monde-en-Photos/USA/Boston/ville/Thumb/34.jpg",text:""},
           {src:"https://f006.backblazeb2.com/file/Le-monde-en-Photos/USA/Boston/ville/35.jpg",thumb:"https://f006.backblazeb2.com/file/Le-monde-en-Photos/USA/Boston/ville/Thumb/35.jpg",text:""},
           {src:"https://f006.backblazeb2.com/file/Le-monde-en-Photos/USA/Boston/ville/36.jpg",thumb:"https://f006.backblazeb2.com/file/Le-monde-en-Photos/USA/Boston/ville/Thumb/36.jpg",text:""},
-          
-          
+                  
           
         ]
       }
@@ -686,6 +727,30 @@ function closeLightbox(){
   }
 }
 
+for (const category in categories) {
+  app.innerHTML += `<h3>${category}</h3>`
+  // puis la gallery
+}
+
+const section = document.createElement("section");
+section.className = "city-section";
+
+section.innerHTML = `
+  <div class="section-header">
+    <h3>${category}</h3>
+  </div>
+`;
+
+const gallery = document.createElement("div");
+gallery.className = "gallery";
+
+/* ici tu continues ton code EXISTANT
+   qui crée les <figure> avec les images */
+
+section.appendChild(gallery);
+app.appendChild(section);
+  
+  
 window.addEventListener("popstate", () => {
   if(lightboxOpen){
     const l = document.querySelector(".lightbox");
@@ -698,6 +763,7 @@ window.addEventListener("popstate", () => {
 </script>
 </body>
 </html>
+
 
 
 
