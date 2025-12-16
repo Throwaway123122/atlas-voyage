@@ -49,6 +49,13 @@ body::before{
   transform: scale(1.05);
   transition: background 0.6s ease;
 }
+body.no-zoom {
+  touch-action: pan-x pan-y;
+}
+
+body.no-zoom * {
+  touch-action: pan-x pan-y;
+}
 .city-btn{
   position: relative;
   height: 160px;
@@ -141,6 +148,21 @@ justify-content:center;
 z-index:999;
 cursor:pointer
 }
+@media (max-width: 768px){
+  .gallery{
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+
+  figure img{
+    border-radius: 14px;
+  }
+
+  figcaption{
+    font-size: 13px;
+  }
+}
+  
 .lightbox img{max-width:90vw;max-height:90vh;border-radius:20px}
 footer{text-align:center;padding:48px;color:var(--muted)}
 </style>
@@ -483,6 +505,27 @@ categories:{
 
 let lightboxOpen = false;
 
+function disableZoom(){
+  document.body.classList.add("no-zoom");
+}
+
+function enableZoom(){
+  document.body.classList.remove("no-zoom");
+}
+
+/* Block ctrl/cmd + wheel zoom */
+window.addEventListener("wheel", e => {
+  if(!lightboxOpen && (e.ctrlKey || e.metaKey)){
+    e.preventDefault();
+  }
+},{ passive:false });
+
+/* Block keyboard zoom */
+window.addEventListener("keydown", e => {
+  if(!lightboxOpen && (e.ctrlKey || e.metaKey) && ["+","-","=","0"].includes(e.key)){
+    e.preventDefault();
+  }
+});
 
   
 const app=document.getElementById("app");
@@ -491,12 +534,13 @@ render();
 
 /* ROUTEUR */
 function render(){
-const h=location.hash.slice(1);
-if(!h)return splash();
-const p=h.split("/");
-if(p[0]==="map")return mapPage();
-if(p.length===1)return country(p[0]);
-if(p.length===2)return city(p[0],p[1]);
+  disableZoom();   // 👈 ADD THIS
+  const h=location.hash.slice(1);
+  if(!h)return splash();
+  const p=h.split("/");
+  if(p[0]==="map")return mapPage();
+  if(p.length===1)return country(p[0]);
+  if(p.length===2)return city(p[0],p[1]);
 }
 
 /* SPLASH */
@@ -603,31 +647,27 @@ function fig(p){
   `;
 }
 function openLightbox(src){
-  // Prevent double-open
   if(lightboxOpen) return;
+
+  enableZoom(); // 👈 ADD THIS
 
   const l = document.createElement("div");
   l.className = "lightbox";
   l.innerHTML = `<img src="${src}">`;
-
   l.onclick = closeLightbox;
-
   document.body.appendChild(l);
 
   lightboxOpen = true;
-
-  // Push history state (important)
   history.pushState({ lightbox: true }, "");
 }
-
 function closeLightbox(){
   const l = document.querySelector(".lightbox");
   if(l) l.remove();
 
   if(lightboxOpen){
     lightboxOpen = false;
+    disableZoom(); // 👈 ADD THIS
 
-    // Only go back if this close was user-initiated
     if(history.state && history.state.lightbox){
       history.back();
     }
@@ -639,12 +679,14 @@ window.addEventListener("popstate", () => {
     const l = document.querySelector(".lightbox");
     if(l) l.remove();
     lightboxOpen = false;
+    disableZoom(); // 👈 ADD THIS
   }
 });
   
 </script>
 </body>
 </html>
+
 
 
 
