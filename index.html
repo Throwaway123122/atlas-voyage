@@ -216,7 +216,10 @@ cursor:pointer
   }
 }
 
-
+body.lock-scroll{
+  overflow: hidden;
+  height: 100vh;
+}
 
   
 .lightbox img{max-width:90vw;max-height:90vh;border-radius:20px}
@@ -806,7 +809,10 @@ function openLightbox(src){
   l.innerHTML = `<img src="${src}">`;
   l.onclick = closeLightbox;
   document.body.appendChild(l);
-
+  
+  // 🔥 Bloque le scroll du body
+  document.body.classList.add("lock-scroll");  
+  
   lightboxOpen = true;
   history.pushState({ lightbox: true }, "");
 }
@@ -817,6 +823,9 @@ function closeLightbox(){
   if(lightboxOpen){
     lightboxOpen = false;
     disableZoom(); // 👈 ADD THIS
+
+    // 🔥 Réactive le scroll du body
+    document.body.classList.remove("lock-scroll");    
 
     if(history.state && history.state.lightbox){
       history.back();
@@ -839,6 +848,7 @@ window.addEventListener("popstate", () => {
 </script>
 </body>
 </html>
+
 
 
 
