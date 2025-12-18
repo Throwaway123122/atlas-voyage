@@ -56,6 +56,31 @@ body.no-zoom {
 body.no-zoom * {
   touch-action: pan-x pan-y;
 }
+
+.category{
+  margin-top: 56px;
+  padding-top: 28px;
+  border-top: 1px solid rgba(255,255,255,.18);
+}
+
+.category h3{
+  font-size: 28px;
+  font-weight: 400;
+  color: var(--accent);
+  margin: 0 0 18px 0;
+  letter-spacing: .5px;
+}
+
+.category h3::after{
+  content:"";
+  display:block;
+  width: 48px;
+  height: 3px;
+  margin-top: 10px;
+  border-radius: 3px;
+  background: linear-gradient(90deg,var(--accent),var(--accent2));
+}
+  
 .city-btn{
   position: relative;
   height: 160px;
@@ -696,18 +721,27 @@ function country(c){
 
 /* VILLE */
 function city(c,id){
-setCountryBackground(data[c].background);
-const d=data[c].cities[id];
-app.innerHTML=`
-<button class="nav" onclick="location.hash='${c}'">← ${c}</button>
-<div class="card">
-<h2>${d.name}</h2>
-<p>${d.description}</p>
-${Object.entries(d.categories).map(([k,p])=>`
-<h3>${k}</h3>
-${p.length?`<div class="gallery">${p.map(fig).join("")}</div>`:`<p>Aucun souvenir pour l'instant.</p>`}
-`).join("")}
-</div>`;
+  setCountryBackground(data[c].background);
+  const d = data[c].cities[id];
+
+  app.innerHTML = `
+  <button class="nav" onclick="location.hash='${c}'">← ${c}</button>
+
+  <div class="card">
+    <h2>${d.name}</h2>
+    <p>${d.description}</p>
+
+    ${Object.entries(d.categories).map(([k,p])=>`
+      <section class="category">
+        <h3>${k}</h3>
+        ${p.length
+          ? `<div class="gallery">${p.map(fig).join("")}</div>`
+          : `<p>Aucun souvenir pour l'instant.</p>`
+        }
+      </section>
+    `).join("")}
+
+  </div>`;
 }
 
 function setCountryBackground(bg){
@@ -789,6 +823,7 @@ window.addEventListener("popstate", () => {
 </script>
 </body>
 </html>
+
 
 
 
