@@ -175,6 +175,22 @@ cursor:pointer
 }
 @media (max-width: 768px){
 
+  header{
+    padding: 28px 16px 20px; /* 🔥 réduit drastiquement la hauteur */
+  }
+
+  header h1{
+    font-size: 32px;        /* au lieu de 48px */
+    margin-bottom: 8px;
+    line-height: 1.1;
+  }
+
+  header p{
+    font-size: 15px;        /* au lieu de 20px */
+    line-height: 1.4;
+    max-width: 90%;
+  }  
+  
   .gallery{
     grid-template-columns: repeat(2, 1fr);
     gap: 12px;
@@ -823,6 +839,7 @@ window.addEventListener("popstate", () => {
 </script>
 </body>
 </html>
+
 
 
 
