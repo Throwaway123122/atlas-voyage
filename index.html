@@ -842,12 +842,14 @@ window.addEventListener("popstate", () => {
     if(l) l.remove();
     lightboxOpen = false;
     disableZoom(); // 👈 ADD THIS
+    document.body.classList.remove("lock-scroll"); 
   }
 });
   
 </script>
 </body>
 </html>
+
 
 
 
