@@ -893,6 +893,12 @@ function city(c,id){
     `).join("")}
 
   </div>`;
+    /* 🔥 FORCE LE SCROLL EN HAUT */
+  requestAnimationFrame(() => {
+    window.scrollTo(0, 0);
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+  });
 }
 
 function setCountryBackground(bg){
@@ -981,6 +987,7 @@ window.addEventListener("popstate", () => {
 </script>
 </body>
 </html>
+
 
 
 
