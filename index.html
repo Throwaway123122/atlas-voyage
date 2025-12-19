@@ -176,12 +176,31 @@ cursor:pointer
 
 @media (max-width: 768px){
 
+  /* header caché PAR DÉFAUT */
   header{
-    padding: 28px 16px 20px; /* 🔥 réduit drastiquement la hauteur */
+    display: none;
   }
-  body:not(.home) header{
-  display: none;
+
+  /* header visible seulement ici */
+  body.page-home header,
+  body.page-map header{
+    display: block;
+    padding: 28px 16px 20px;
   }
+
+  header h1{
+    font-size: 32px;
+    margin-bottom: 8px;
+    line-height: 1.1;
+  }
+
+  header p{
+    font-size: 15px;
+    line-height: 1.4;
+    max-width: 90%;
+  }
+
+  /* le reste de ton CSS mobile reste IDENTIQUE */
   h2{
     margin-top: 0;
   }
@@ -801,7 +820,9 @@ categories:{
 };
 
 let lightboxOpen = false;
-
+function setPage(type){
+  document.body.className = `page-${type}`;
+}
 function disableZoom(){
   document.body.classList.add("no-zoom");
 }
@@ -843,6 +864,7 @@ function render(){
 /* SPLASH */
 function splash(){
 setCountryBackground("https://f006.backblazeb2.com/file/Le-monde-en-Photos/world.jpg");
+setPage("home");
 app.innerHTML=`
 <div class="card" style="text-align:center">
 <img src="https://f006.backblazeb2.com/file/Le-monde-en-Photos/cover.jpg" style="max-width:100%;border-radius:22px;margin-bottom:24px">
@@ -855,7 +877,7 @@ app.innerHTML=`
 /* CARTE */
 function mapPage(){
   setCountryBackground("https://f006.backblazeb2.com/file/Le-monde-en-Photos/world.jpg");
-
+  setPage("map");
   app.innerHTML = `
     <div class="card">
       <div id="map"></div>
@@ -888,6 +910,7 @@ function mapPage(){
 function country(c){
   const d = data[c];
   setCountryBackground(d.background);
+  setPage("country");
   app.innerHTML = `
     <button class="nav" onclick="location.hash='map'">← Carte</button>
 
@@ -915,6 +938,7 @@ function country(c){
 /* VILLE */
 function city(c,id){
   setCountryBackground(data[c].background);
+  setPage("city");
   const d = data[c].cities[id];
 
   app.innerHTML = `
@@ -1029,6 +1053,7 @@ window.addEventListener("popstate", () => {
 </script>
 </body>
 </html>
+
 
 
 
