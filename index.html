@@ -854,13 +854,34 @@ app.innerHTML=`
 
 /* CARTE */
 function mapPage(){
-setCountryBackground("https://f006.backblazeb2.com/file/Le-monde-en-Photos/world.jpg");
-app.innerHTML=`<div class="card"><div id="map"></div></div>`;
-const map=L.map("map",{scrollWheelZoom:false}).setView([20,0],2);
-L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png").addTo(map);
-Object.entries(data).forEach(([k,v])=>{
-L.marker(v.coords).addTo(map).on("click",()=>location.hash=k);
-});
+  setCountryBackground("https://f006.backblazeb2.com/file/Le-monde-en-Photos/world.jpg");
+
+  app.innerHTML = `
+    <div class="card">
+      <div id="map"></div>
+    </div>
+  `;
+
+  // 🔥 Centre sur l’Amérique du Nord
+  const map = L.map("map", {
+    scrollWheelZoom: false
+  }).setView([45, -95], 4);
+
+  // 🌍 Carte Option C — OpenTopoMap (relief + couleurs)
+  L.tileLayer(
+    "https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png",
+    {
+      maxZoom: 17,
+      attribution: "© OpenStreetMap contributors, © OpenTopoMap"
+    }
+  ).addTo(map);
+
+  // 📍 Marqueurs pays
+  Object.entries(data).forEach(([k,v])=>{
+    L.marker(v.coords)
+      .addTo(map)
+      .on("click", () => location.hash = k);
+  });
 }
 
 /* PAYS */
@@ -1008,6 +1029,7 @@ window.addEventListener("popstate", () => {
 </script>
 </body>
 </html>
+
 
 
 
