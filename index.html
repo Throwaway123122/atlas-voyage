@@ -931,7 +931,7 @@ function country(c){
         ${Object.entries(d.cities).map(([id, city]) => `
           <div class="city-btn"
                onclick="location.hash='${c}/${id}'"
-               style="background-image:url('${getCityImage(city, d)}')">
+               style="background-image:url('${getCityThumbnail(city)}')">
             <span>${city.name}</span>
           </div>
         `).join("")}
@@ -989,6 +989,25 @@ function getCityImage(city, country){
     }
   }
   return country.images[0]?.src || "";
+}
+
+function getCityThumbnail(city, country){
+  let src = "";
+
+  // si la city a un cover, prends le thumbnail si disponible
+  if(city.cover) {
+    src = city.coverThumb || city.cover; // coverThumb si défini, sinon cover
+    return src;
+  }
+
+  // sinon, cherche dans les catégories
+  for(const cat of Object.values(city.categories)){
+    if(cat.length && cat[0].thumb) return cat[0].thumb;  // priorité au thumb
+    if(cat.length && cat[0].src) return cat[0].src;      // fallback sur src complet
+  }
+
+  // fallback sur la première image du pays
+  return country.images[0]?.thumb || country.images[0]?.src || "";
 }
   
 /* IMAGES */
@@ -1058,6 +1077,7 @@ window.addEventListener("popstate", () => {
 </script>
 </body>
 </html>
+
 
 
 
