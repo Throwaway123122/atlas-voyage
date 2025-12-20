@@ -176,30 +176,43 @@ cursor:pointer
 
 @media (max-width: 768px){
 
-  /* header ultra compact pour splash screen mobile */
+  /* body background map réduite */
+  body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    z-index:-1;
+    background: var(--country-bg);
+      linear-gradient(rgba(18,15,26,.85), rgba(18,15,26,.95)),
+      url("https://f006.backblazeb2.com/file/Le-monde-en-Photos/world.jpg") center / contain no-repeat;
+    filter: blur(6px);
+    transform: scale(0.9); /* réduit la taille de la carte */
+  }
+
+  /* header ultra compact */
   body.page-home header,
   body.page-map header{
     display: block;
-    padding: 8px 12px 8px;  /* 🔥 réduit le padding en haut et en bas */
+    padding: 6px 12px 4px;  /* top / sides / bottom */
   }
 
   header h1{
-    font-size: 22px;       /* titre plus petit */
-    margin-top: 0;          /* supprime l’espace au-dessus */
-    margin-bottom: 2px;     /* réduit l’espace sous le titre */
+    font-size: 20px;
+    margin: 0;
     line-height: 1.1;
   }
 
   header p{
-    font-size: 12px;       /* texte plus petit */
+    font-size: 11px;
     line-height: 1.2;
     max-width: 95%;
-    margin: 0 auto 4px auto; /* super compact */
+    margin: 2px auto 4px auto;
   }
 
+  /* catégorie compressée */
   .category{
-    margin-top: 12px;
-    padding-top: 4px;
+    margin-top: 8px;
+    padding-top: 2px;
   }
 
   .category:first-child{
@@ -209,12 +222,13 @@ cursor:pointer
   }
 
   main{
-    padding: 6px;
+    padding: 4px;
   }
 
+  /* galerie compressée */
   .gallery{
     grid-template-columns: repeat(2, 1fr);
-    gap: 8px;
+    gap: 6px;
   }
 
   figure{
@@ -229,21 +243,21 @@ cursor:pointer
   }
 
   .card{
-    padding: 8px;
-    margin-bottom: 8px;
+    padding: 6px;
+    margin-bottom: 6px;
   }
 
   figcaption{
     margin-top: 2px;
-    font-size: 11px;
+    font-size: 10px;
     line-height: 1.1;
     text-align: left;
   }
 
   /* footer compressé */
   footer{
-    padding: 12px 12px 8px 12px;  /* réduit l’espace au-dessus et dessous */
-    font-size: 11px;
+    padding: 8px 12px 6px 12px;
+    font-size: 10px;
   }
 }
 
@@ -1044,6 +1058,7 @@ window.addEventListener("popstate", () => {
 </script>
 </body>
 </html>
+
 
 
 
