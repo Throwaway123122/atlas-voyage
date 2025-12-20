@@ -891,7 +891,7 @@ function mapPage(){
 
   // 🔥 Centre sur l’Amérique du Nord
   const map = L.map("map", {
-    scrollWheelZoom: false,
+    scrollWheelZoom: true,
     maxBounds: [[-90, -180], [90, 180]],
     maxBoundsViscosity: 1.0,
     worldCopyJump: false
@@ -1080,6 +1080,7 @@ window.addEventListener("popstate", () => {
 </script>
 </body>
 </html>
+
 
 
 
