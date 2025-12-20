@@ -891,7 +891,10 @@ function mapPage(){
 
   // 🔥 Centre sur l’Amérique du Nord
   const map = L.map("map", {
-    scrollWheelZoom: false
+    scrollWheelZoom: false,
+    maxBounds: [[-90, -180], [90, 180]],
+    maxBoundsViscosity: 1.0,
+    worldCopyJump: false
   }).setView([45, -95], 2);
 
   // 🌍 Carte Option C — OpenTopoMap (relief + couleurs)
@@ -1077,6 +1080,7 @@ window.addEventListener("popstate", () => {
 </script>
 </body>
 </html>
+
 
 
 
