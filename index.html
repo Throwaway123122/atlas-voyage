@@ -891,14 +891,14 @@ let scrollY = 0;
 function preventTouchScroll(e){
   if(!lightboxOpen) return;
 
-  // ✅ Allow gestures INSIDE the image
+  // ✅ Allow pinch zoom (2+ fingers)
+  if(e.touches && e.touches.length > 1) return;
+
+  // ✅ Allow image gestures
   if(e.target.closest(".lightbox img")) return;
 
-  // ❌ Block everything else (page behind)
   e.preventDefault();
 }
-
-document.addEventListener("touchmove", preventTouchScroll, { passive:false });
 
 document.addEventListener("touchmove", preventTouchScroll, { passive:false });
   
@@ -1108,6 +1108,7 @@ window.addEventListener("popstate", () => {
 </script>
 </body>
 </html>
+
 
 
 
