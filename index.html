@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Atlas Voyages</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -48,6 +48,13 @@ body::before{
   filter: blur(6px);
   transform: scale(1.05);
   transition: background 0.6s ease;
+}
+body.no-zoom {
+  touch-action: pan-x pan-y;
+}
+
+body.no-zoom * {
+  touch-action: pan-x pan-y;
 }
 
 .category{
@@ -157,31 +164,14 @@ figure{margin:0;cursor:pointer}
 figure img{width:100%;border-radius:20px;transition:transform .4s}
 figure:hover img{transform:scale(1.03)}
 figcaption{margin-top:10px;font-size:15px;color:var(--muted)}
-body.lock-scroll {
-  position: fixed;
-  width: 100%;
-  overflow: hidden;
-  touch-action: none;
-  overscroll-behavior: none;
-}  
-/* 🖼 Lightbox captures gestures */
-.lightbox {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,.92);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-
-  touch-action: none;
-  overscroll-behavior: contain;
-}
-
-.lightbox img {
-  max-width: 95vw;
-  max-height: 95vh;
-  touch-action: pinch-zoom pan-x pan-y;
+.lightbox{
+position:fixed;inset:0;
+background:rgba(10,8,15,.95);
+display:flex;
+align-items:center;
+justify-content:center;
+z-index:999;
+cursor:pointer
 }
 
 @media (max-width: 768px){
@@ -886,22 +876,6 @@ app.innerHTML=`
 </div>`;
 }
 
-let scrollY = 0;
-
-function preventTouchScroll(e){
-  if(!lightboxOpen) return;
-
-  // ✅ Allow pinch zoom (2+ fingers)
-  if(e.touches && e.touches.length > 1) return;
-
-  // ✅ Allow image gestures
-  if(e.target.closest(".lightbox img")) return;
-
-  e.preventDefault();
-}
-
-document.addEventListener("touchmove", preventTouchScroll, { passive:false });
-  
 /* CARTE */
 function mapPage(){
   setCountryBackground("https://f006.backblazeb2.com/file/Le-monde-en-Photos/world.jpg");
@@ -1056,21 +1030,19 @@ function fig(p){
 function openLightbox(src){
   if(lightboxOpen) return;
 
-  scrollY = window.scrollY;
-
-  enableZoom();
+  enableZoom(); // 👈 ADD THIS
 
   const l = document.createElement("div");
   l.className = "lightbox";
   l.innerHTML = `<img src="${src}">`;
   l.onclick = closeLightbox;
   document.body.appendChild(l);
-
-  document.body.classList.add("lock-scroll");
-  document.body.style.top = `-${scrollY}px`;
-
+  
+  // 🔥 Bloque le scroll du body
+  document.body.classList.add("lock-scroll");  
+  
   lightboxOpen = true;
-  history.pushState({ lightbox:true }, "");
+  history.pushState({ lightbox: true }, "");
 }
 function closeLightbox(){
   const l = document.querySelector(".lightbox");
@@ -1078,13 +1050,10 @@ function closeLightbox(){
 
   if(lightboxOpen){
     lightboxOpen = false;
+    disableZoom(); // 👈 ADD THIS
 
-    disableZoom();
-
-    document.body.classList.remove("lock-scroll");
-    document.body.style.top = "";
-
-    window.scrollTo(0, scrollY);
+    // 🔥 Réactive le scroll du body
+    document.body.classList.remove("lock-scroll");    
 
     if(history.state && history.state.lightbox){
       history.back();
@@ -1108,11 +1077,6 @@ window.addEventListener("popstate", () => {
 </script>
 </body>
 </html>
-
-
-
-
-
 
 
 
