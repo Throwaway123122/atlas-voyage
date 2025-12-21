@@ -164,14 +164,30 @@ figure{margin:0;cursor:pointer}
 figure img{width:100%;border-radius:20px;transition:transform .4s}
 figure:hover img{transform:scale(1.03)}
 figcaption{margin-top:10px;font-size:15px;color:var(--muted)}
-.lightbox{
-position:fixed;inset:0;
-background:rgba(10,8,15,.95);
-display:flex;
-align-items:center;
-justify-content:center;
-z-index:999;
-cursor:pointer
+body.lock-scroll {
+  position: fixed;
+  width: 100%;
+  overflow: hidden;
+  touch-action: none;
+  overscroll-behavior: none;
+}  
+/* 🖼 Lightbox captures gestures */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.92);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+
+  touch-action: pan-x pan-y;
+  overscroll-behavior: contain;
+}
+
+.lightbox img {
+  max-width: 95vw;
+  max-height: 95vh;
 }
 
 @media (max-width: 768px){
@@ -876,6 +892,16 @@ app.innerHTML=`
 </div>`;
 }
 
+let scrollY = 0;
+
+function preventTouchScroll(e){
+  if(lightboxOpen){
+    e.preventDefault();
+  }
+}
+
+document.addEventListener("touchmove", preventTouchScroll, { passive:false });
+  
 /* CARTE */
 function mapPage(){
   setCountryBackground("https://f006.backblazeb2.com/file/Le-monde-en-Photos/world.jpg");
@@ -1030,19 +1056,21 @@ function fig(p){
 function openLightbox(src){
   if(lightboxOpen) return;
 
-  enableZoom(); // 👈 ADD THIS
+  scrollY = window.scrollY;
+
+  enableZoom();
 
   const l = document.createElement("div");
   l.className = "lightbox";
   l.innerHTML = `<img src="${src}">`;
   l.onclick = closeLightbox;
   document.body.appendChild(l);
-  
-  // 🔥 Bloque le scroll du body
-  document.body.classList.add("lock-scroll");  
-  
+
+  document.body.classList.add("lock-scroll");
+  document.body.style.top = `-${scrollY}px`;
+
   lightboxOpen = true;
-  history.pushState({ lightbox: true }, "");
+  history.pushState({ lightbox:true }, "");
 }
 function closeLightbox(){
   const l = document.querySelector(".lightbox");
@@ -1050,10 +1078,13 @@ function closeLightbox(){
 
   if(lightboxOpen){
     lightboxOpen = false;
-    disableZoom(); // 👈 ADD THIS
 
-    // 🔥 Réactive le scroll du body
-    document.body.classList.remove("lock-scroll");    
+    disableZoom();
+
+    document.body.classList.remove("lock-scroll");
+    document.body.style.top = "";
+
+    window.scrollTo(0, scrollY);
 
     if(history.state && history.state.lightbox){
       history.back();
@@ -1077,6 +1108,7 @@ window.addEventListener("popstate", () => {
 </script>
 </body>
 </html>
+
 
 
 
