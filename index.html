@@ -188,6 +188,7 @@ body.lock-scroll {
 .lightbox img {
   max-width: 95vw;
   max-height: 95vh;
+  touch-action: pinch-zoom pan-x pan-y;
 }
 
 @media (max-width: 768px){
@@ -895,10 +896,16 @@ app.innerHTML=`
 let scrollY = 0;
 
 function preventTouchScroll(e){
-  if(lightboxOpen){
-    e.preventDefault();
-  }
+  if(!lightboxOpen) return;
+
+  // ✅ Allow gestures INSIDE the image
+  if(e.target.closest(".lightbox img")) return;
+
+  // ❌ Block everything else (page behind)
+  e.preventDefault();
 }
+
+document.addEventListener("touchmove", preventTouchScroll, { passive:false });
 
 document.addEventListener("touchmove", preventTouchScroll, { passive:false });
   
@@ -1108,6 +1115,7 @@ window.addEventListener("popstate", () => {
 </script>
 </body>
 </html>
+
 
 
 
