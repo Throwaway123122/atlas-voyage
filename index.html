@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Atlas Voyages</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -48,13 +48,6 @@ body::before{
   filter: blur(6px);
   transform: scale(1.05);
   transition: background 0.6s ease;
-}
-body.no-zoom {
-  touch-action: pan-x pan-y;
-}
-
-body.no-zoom * {
-  touch-action: pan-x pan-y;
 }
 
 .category{
@@ -181,7 +174,7 @@ body.lock-scroll {
   justify-content: center;
   z-index: 9999;
 
-  touch-action: pan-x pan-y;
+  touch-action: none;
   overscroll-behavior: contain;
 }
 
@@ -1115,6 +1108,7 @@ window.addEventListener("popstate", () => {
 </script>
 </body>
 </html>
+
 
 
 
